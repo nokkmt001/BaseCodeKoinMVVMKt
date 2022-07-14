@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="viewModel"
+      type="com.phat.testbase.view.ui.main.MainViewModel" />
+
+    <variable
+      name="adapter"
+      type="com.phat.testbase.view.adapter.PosterAdapter" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recyclerView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipToPadding="false"
+      android:padding="4dp"
+      app:adapter="@{adapter}"
+      app:adapterPosterList="@{viewModel.posterList}"
+      app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+      app:spanCount="2"
+      tools:listitem="@layout/item_poster" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/fab"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="24dp"
+      android:layout_marginBottom="24dp"
+      android:backgroundTint="@color/colorPrimary"
+      android:src="@drawable/ic_add"
+      app:borderWidth="0dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:tint="@color/white"
+      tools:ignore="ContentDescription" />
+
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/card"
+      android:layout_width="240dp"
+      android:layout_height="312dp"
+      android:layout_marginEnd="30dp"
+      android:layout_marginBottom="30dp"
+      android:visibility="gone"
+      app:cardBackgroundColor="@color/background"
+      app:cardCornerRadius="4dp"
+      app:cardElevation="8dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible">
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:paddingStart="42dp"
+        android:paddingEnd="42dp"
+        android:text="compose new"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:drawableStartCompat="@drawable/ic_add" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
