@@ -101,6 +101,8 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$versions.robolectricVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlinVersion"
     testImplementation "org.mockito:mockito-inline:$versions.mockitoInlineVersion"
+
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }
 
 apply from: '../spotless.gradle'

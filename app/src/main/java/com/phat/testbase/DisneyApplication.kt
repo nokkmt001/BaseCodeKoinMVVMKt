@@ -19,13 +19,10 @@
 package com.phat.testbase
 
 import android.app.Application
-import com.phat.testbase.BuildConfig
-import com.phat.testbase.di.networkModule
-import com.phat.testbase.di.persistenceModule
-import com.phat.testbase.di.repositoryModule
-import com.phat.testbase.di.viewModelModule
+import com.phat.testbase.di.*
 import com.phat.testbase.network.GlobalResponseOperator
 import com.skydoves.sandwich.SandwichInitializer
+import org.koin.android.BuildConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -38,6 +35,7 @@ class DisneyApplication : Application() {
     startKoin {
       androidContext(this@DisneyApplication)
       modules(networkModule)
+      modules(networkModuleTest)
       modules(persistenceModule)
       modules(repositoryModule)
       modules(viewModelModule)

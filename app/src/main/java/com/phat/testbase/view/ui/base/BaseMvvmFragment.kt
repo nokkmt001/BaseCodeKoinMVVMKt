@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 import com.skydoves.bindables.BindingFragment
+import org.koin.android.viewmodel.ext.android.getViewModel
 
 class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@LayoutRes private val contentLayoutId: Int) : BindingFragment<T>(contentLayoutId)  {
 
-
+    lateinit var viewModel : VM
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -19,6 +20,8 @@ class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@LayoutRes p
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        viewModel =
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -35,10 +38,6 @@ class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@LayoutRes p
         savedInstanceState: Bundle?
     ): View {
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,6 +73,8 @@ class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@LayoutRes p
 
     override fun onDestroy() {
         super.onDestroy()
+
+
     }
 
     override fun onDetach() {
