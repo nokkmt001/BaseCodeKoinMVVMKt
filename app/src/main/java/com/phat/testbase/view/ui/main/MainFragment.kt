@@ -11,16 +11,8 @@ import org.koin.android.viewmodel.ext.android.getViewModel
 
 class MainFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        super.onCreateView(inflater, container, savedInstanceState)
-        return  binding {
-            pagerAdapter = MainPagerAdapter(activity!!)
-            vm = getViewModel()
-            textTitle.text = "123456789"
-        }.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.textTitle.text = "123456789"
     }
 }

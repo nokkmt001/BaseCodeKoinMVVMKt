@@ -7,9 +7,6 @@
             name="vm"
             type="com.phat.testbase.view.ui.main.MainViewModel" />
 
-        <variable
-            name="pagerAdapter"
-            type="com.phat.testbase.view.ui.main.MainPagerAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,8 +35,7 @@
             app:bindNavigation="@{mainBottomNavigation}"
             app:layout_constraintBottom_toTopOf="@id/main_bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-            app:pagerAdapter="@{pagerAdapter}" />
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
         <com.skydoves.androidbottombar.AndroidBottomBarView
             android:id="@+id/main_bottom_navigation"

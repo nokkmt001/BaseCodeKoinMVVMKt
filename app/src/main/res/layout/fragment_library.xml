@@ -9,10 +9,6 @@
       name="viewModel"
       type="com.phat.testbase.view.ui.main.MainViewModel" />
 
-    <variable
-      name="adapter"
-      type="com.phat.testbase.view.adapter.PosterLineAdapter" />
-
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout

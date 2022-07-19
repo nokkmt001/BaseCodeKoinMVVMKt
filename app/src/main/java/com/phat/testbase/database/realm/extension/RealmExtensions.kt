@@ -93,14 +93,14 @@ inline fun <reified T : RealmModel> queryFirst(query: Query<T>): T? {
 fun <T : RealmModel> T.queryLast(): T? {
     getRealmInstance().use { realm ->
         val result = realm.where(this.javaClass).findAll()
-        return if (result != null && result.isNotEmpty()) realm.copyFromRealm(result.last()) else null
+        return if (result != null && result.isNotEmpty()) realm.copyFromRealm(result.last()!!) else null
     }
 }
 
 inline fun <reified T : RealmModel> queryLast(): T? {
     getRealmInstance<T>().use { realm ->
         val result: RealmResults<T> = realm.where(T::class.java).findAll()
-        return if (result.isNotEmpty()) realm.copyFromRealm(result.last()) else null
+        return if (result.isNotEmpty()) realm.copyFromRealm(result.last()!!) else null
     }
 }
 
@@ -110,14 +110,14 @@ inline fun <reified T : RealmModel> queryLast(): T? {
 fun <T : RealmModel> T.queryLast(query: Query<T>): T? {
     getRealmInstance().use { realm ->
         val result = realm.where(this.javaClass).withQuery(query).findAll()
-        return if (result != null && result.isNotEmpty()) realm.copyFromRealm(result.last()) else null
+        return if (result != null && result.isNotEmpty()) realm.copyFromRealm(result.last()!!) else null
     }
 }
 
 inline fun <reified T : RealmModel> queryLast(query: Query<T>): T? {
     getRealmInstance<T>().use { realm ->
         val result: RealmResults<T> = realm.where(T::class.java).runQuery(query).findAll()
-        return if (result.isNotEmpty()) realm.copyFromRealm(result.last()) else null
+        return if (result.isNotEmpty()) realm.copyFromRealm(result.last()!!) else null
     }
 }
 
@@ -423,14 +423,14 @@ inline fun <reified T : RealmModel> hasPrimaryKey(realm: Realm): Boolean {
 
 inline fun <reified T : RealmModel> T.getLastPk(realm: Realm): Long {
     getPrimaryKeyFieldName(realm).let { fieldName ->
-        val result = realm.where(this.javaClass).max(fieldName)
+        val result = realm.where(this.javaClass).max(fieldName.toString())
         return result?.toLong() ?: 0
     }
 }
 
 inline fun <reified T : RealmModel> getLastPk(realm: Realm): Long {
     getPrimaryKeyFieldName<T>(realm).let { fieldName ->
-        val result = realm.where(T::class.java).max(fieldName)
+        val result = realm.where(T::class.java).max(fieldName.toString())
         return result?.toLong() ?: 0
     }
 }
@@ -445,7 +445,7 @@ inline fun <reified T : RealmModel> getPrimaryKeyFieldName(realm: Realm): String
 
 inline fun <reified T : RealmModel> T.setPk(realm: Realm, value: Long) {
     getPrimaryKeyFieldName(realm).let { fieldName ->
-        val f1 = javaClass.getDeclaredField(fieldName)
+        val f1 = javaClass.getDeclaredField(fieldName.toString())
         try {
             val accesible = f1.isAccessible
             f1.isAccessible = true

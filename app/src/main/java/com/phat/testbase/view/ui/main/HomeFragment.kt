@@ -27,8 +27,8 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.skydoves.bindables.BindingFragment
 import com.phat.testbase.R
 import com.phat.testbase.databinding.FragmentHomeBinding
-import com.phat.testbase.devphat.extensions.gone
-import com.phat.testbase.devphat.extensions.visible
+import com.phat.testbase.dev.extensions.gone
+import com.phat.testbase.dev.extensions.visible
 
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 

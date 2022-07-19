@@ -2,8 +2,7 @@ package com.phat.testbase.di
 
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.phat.testbase.devphat.utils.ContainsUtils.TIME_OUT
-import com.phat.testbase.devphat.extensions.getFirstGenericParameter
+import com.phat.testbase.dev.utils.ContainsUtils.TIME_OUT
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

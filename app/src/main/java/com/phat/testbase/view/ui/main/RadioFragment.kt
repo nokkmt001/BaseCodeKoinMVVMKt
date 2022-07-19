@@ -23,8 +23,6 @@ import android.view.ViewGroup
 import com.skydoves.bindables.BindingFragment
 import com.phat.testbase.R
 import com.phat.testbase.databinding.FragmentRadioBinding
-import com.phat.testbase.view.adapter.PosterCircleAdapter
-import org.koin.android.viewmodel.ext.android.getSharedViewModel
 
 class RadioFragment : BindingFragment<FragmentRadioBinding>(R.layout.fragment_radio) {
 

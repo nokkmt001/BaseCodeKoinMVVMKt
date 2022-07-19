@@ -4,13 +4,14 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.PersistableBundle
 import android.widget.TextView
 import com.phat.testbase.R
 import com.phat.testbase.database.realm.extension.*
 import com.phat.testbase.databinding.ActivityTestKoinBinding
-import com.phat.testbase.devphat.extensions.applyExitMaterialTransform
-import com.phat.testbase.devphat.extensions.isMainThread
-import com.phat.testbase.devphat.extensions.wait
+import com.phat.testbase.dev.extensions.applyExitMaterialTransform
+import com.phat.testbase.dev.extensions.isMainThread
+import com.phat.testbase.dev.extensions.wait
 import com.phat.testbase.model.realm.Address
 import com.phat.testbase.model.realm.Item
 import com.phat.testbase.model.realm.User
@@ -22,9 +23,9 @@ class TestKoinActivity: BindingActivity<ActivityTestKoinBinding>(R.layout.activi
     private val dbSize = 100
     private val userSize = 5
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
         applyExitMaterialTransform()
-        super.onCreate(savedInstanceState)
         performTest("main thread") {
             Thread {
                 performTest("background thread items") {
@@ -35,7 +36,6 @@ class TestKoinActivity: BindingActivity<ActivityTestKoinBinding>(R.layout.activi
                 }
             }.start()
         }
-
     }
 
     private fun performUserTest(threadName: String, finishCallback: (() -> Unit)? = null) {

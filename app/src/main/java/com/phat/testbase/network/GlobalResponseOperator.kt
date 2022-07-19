@@ -18,7 +18,7 @@ package com.phat.testbase.network
 
 import android.app.Application
 import android.widget.Toast
-import com.phat.testbase.devphat.mapper.ErrorResponseMapper
+import com.phat.testbase.dev.mapper.ErrorResponseMapper
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.map

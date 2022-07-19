@@ -19,9 +19,10 @@
 package com.phat.testbase
 
 import android.app.Application
+import android.widget.Toast
 import com.orhanobut.hawk.Hawk
 import com.phat.testbase.database.realm.extension.RealmConfigStore
-import com.phat.testbase.devphat.extensions.module.DependenceContext
+import com.phat.testbase.dev.extensions.module.DependenceContext
 import com.phat.testbase.di.*
 import com.phat.testbase.network.GlobalResponseOperator
 import com.skydoves.sandwich.SandwichInitializer
@@ -37,27 +38,31 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        DependenceContext.init(this)
-        Hawk.init(this).build()
-        Realm.init(this)
-        val userAddressConfig = RealmConfiguration.Builder().name("user-db").schemaVersion(1)
-            .deleteRealmIfMigrationNeeded().build()
-        // clear previous data for fresh start
-        Realm.deleteRealm(Realm.getDefaultConfiguration())
-        Realm.deleteRealm(userAddressConfig)
-        RealmConfigStore.initModule(UserModule::class.java, userAddressConfig)
+        try {
+            DependenceContext.init(this)
+            Hawk.init(this).build()
+            Realm.init(this)
+            val userAddressConfig = RealmConfiguration.Builder().name("user-db").schemaVersion(1)
+                .deleteRealmIfMigrationNeeded().build()
+            // clear previous data for fresh start
+            Realm.deleteRealm(Realm.getDefaultConfiguration()!!)
+            Realm.deleteRealm(userAddressConfig)
+            RealmConfigStore.initModule(UserModule::class.java, userAddressConfig)
 
-        startKoin {
-            androidContext(this@MainApplication)
-            modules(networkModule)
-            modules(viewModelModule)
-        }
+            startKoin {
+                androidContext(this@MainApplication)
+                modules(networkModule)
+                modules(viewModelModule)
+            }
 
-        // initialize global sandwich operator
-        SandwichInitializer.sandwichOperator = GlobalResponseOperator<Any>(this)
+            // initialize global sandwich operator
+            SandwichInitializer.sandwichOperator = GlobalResponseOperator<Any>(this)
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+            if (BuildConfig.DEBUG) {
+                Timber.plant(Timber.DebugTree())
+            }
+        }catch (e: Exception){
+            Toast.makeText(this, e.message.toString(), Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -1,23 +1,26 @@
 package com.phat.testbase.view.ui.test
 
-import androidx.fragment.app.FragmentManager
 import com.phat.testbase.R
 import com.phat.testbase.databinding.ActivityContainerBinding
-import com.phat.testbase.devphat.xbase.BaseMainActivity
-import com.phat.testbase.devphat.xbase.BaseMvvmFragment
-import com.phat.testbase.devphat.xbase.BaseMvvmViewModel
+import com.phat.testbase.dev.xbase.BaseMvvmActivity
+import com.phat.testbase.dev.xbase.EmptyViewModel
+import com.phat.testbase.view.ui.main.MainFragment
+import com.skydoves.bindables.BindingFragment
 
-class TestingActivity : BaseMainActivity<ActivityContainerBinding, BaseMvvmViewModel>(R.layout.activity_container) {
+class TestingActivity : BaseMvvmActivity<ActivityContainerBinding, EmptyViewModel>(R.layout.activity_container) {
 
-    override fun initFragment(): Array<BaseMvvmFragment<*, *>?> {
-        val rootFragments: Array<BaseMvvmFragment<*, *>?> = arrayOfNulls(1)
-        rootFragments[0] = TestingFragment()
-        return rootFragments
+    override fun getVM(): Class<EmptyViewModel> = EmptyViewModel::class.java
+
+    override fun startFlow() {
+        super.startFlow()
+        loadFragment(MainFragment())
     }
 
-    override var containerLayoutId = R.id.containerFragment
-
-    override fun setFragmentManager(): FragmentManager = supportFragmentManager
-    override fun getVM(): Class<BaseMvvmViewModel> = BaseMvvmViewModel::class.java
+    private fun loadFragment(fragment: BindingFragment<*>) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.containerFragment, fragment)
+            commit()
+        }
+    }
 
 }

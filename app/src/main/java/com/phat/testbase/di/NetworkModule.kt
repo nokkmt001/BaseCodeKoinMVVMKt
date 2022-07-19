@@ -16,9 +16,10 @@
 
 package com.phat.testbase.di
 
-import com.phat.testbase.devphat.utils.ContainsUtils.baseUrl
-import com.phat.testbase.network.DisneyService
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.phat.testbase.dev.utils.ContainsUtils.baseUrl
 import com.phat.testbase.network.RequestInterceptor
+import com.phat.testbase.network.TestService
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
@@ -39,8 +40,9 @@ val networkModule = module {
       .baseUrl(baseUrl)
       .addConverterFactory(GsonConverterFactory.create())
       .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
+      .addCallAdapterFactory(CoroutineCallAdapterFactory())
       .build()
   }
 
-  single { get<Retrofit>().create(DisneyService::class.java) }
+  single { get<Retrofit>().create(TestService::class.java) }
 }

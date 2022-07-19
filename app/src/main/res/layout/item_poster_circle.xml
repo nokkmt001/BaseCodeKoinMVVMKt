@@ -38,7 +38,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:loadImage="@{poster.poster}"
         app:shapeAppearanceOverlay="@style/CircleImageStyle" />
 
       <androidx.appcompat.widget.AppCompatTextView
@@ -47,7 +46,6 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:padding="8dp"
-        android:text="@{poster.name}"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="@color/white"
         android:textSize="21sp"
@@ -63,7 +61,6 @@
         android:layout_height="wrap_content"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="@{poster.playtime}"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="@color/white_87"
         android:textSize="14sp"

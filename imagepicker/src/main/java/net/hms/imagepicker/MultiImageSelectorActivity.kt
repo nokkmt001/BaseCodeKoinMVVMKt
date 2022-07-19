@@ -85,7 +85,7 @@ class MultiImageSelectorActivity : AppCompatActivity() {
         if (mode == MODE_MULTI && intent.hasExtra(
                 EXTRA_DEFAULT_SELECTED_LIST
             )) {
-            resultList = intent.getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST)
+            resultList = intent.getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST)!!
         }
 
         setupViews()

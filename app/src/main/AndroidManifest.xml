@@ -34,25 +34,36 @@
 
         <activity
             android:name=".view.ui.main.MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+
         </activity>
         <activity
-            android:name=".devphat.view.TestActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".dev.view.TestActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".view.ui.test.TestingActivity"
             android:exported="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".view.ui.main.TestKoinActivity" />
+        <activity android:name=".view.ui.test.TestMainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
         <receiver android:name=".service.receiver.NetworkChangeReceiver"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />

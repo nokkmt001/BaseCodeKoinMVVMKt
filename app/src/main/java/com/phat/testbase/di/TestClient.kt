@@ -1,6 +1,6 @@
 package com.phat.testbase.di
 
-import com.phat.testbase.devphat.utils.ContainsUtils
+import com.phat.testbase.dev.utils.ContainsUtils
 import com.phat.testbase.network.TestService
 import okhttp3.Interceptor
 

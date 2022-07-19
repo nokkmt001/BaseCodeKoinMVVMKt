@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">DisneyMotions</string>
+  <string name="app_name">AeonBooking</string>
   <string name="database">DisneyMotions.db</string>
   <string name="menu_home">Home</string>
   <string name="menu_library">Library</string>
