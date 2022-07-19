@@ -16,6 +16,7 @@
 
 package com.phat.testbase.di
 
+import com.phat.testbase.devphat.utils.ContainsUtils.baseUrl
 import com.phat.testbase.network.DisneyService
 import com.phat.testbase.network.RequestInterceptor
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
@@ -35,9 +36,7 @@ val networkModule = module {
   single {
     Retrofit.Builder()
       .client(get<OkHttpClient>())
-      .baseUrl(
-        "https://gist.githubusercontent.com/skydoves/aa3bbbf495b0fa91db8a9e89f34e4873/raw/a1a13d37027e8920412da5f00f6a89c5a3dbfb9a/"
-      )
+      .baseUrl(baseUrl)
       .addConverterFactory(GsonConverterFactory.create())
       .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
       .build()

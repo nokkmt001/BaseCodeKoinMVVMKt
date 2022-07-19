@@ -6,4 +6,7 @@
   <string name="menu_radio">Radio</string>
   <string name="poster_transition">poster_shared_element_container</string>
   <string name="plot">Plot</string>
+
+  <string name="mess_network_unavailable_tip">Mất kết nối internet, vui lòng kiểm tra lại!</string>
+
 </resources>

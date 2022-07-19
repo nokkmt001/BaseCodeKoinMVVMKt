@@ -27,10 +27,8 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.skydoves.bindables.BindingFragment
 import com.phat.testbase.R
 import com.phat.testbase.databinding.FragmentHomeBinding
-import com.phat.testbase.extensions.gone
-import com.phat.testbase.extensions.visible
-import com.phat.testbase.view.adapter.PosterAdapter
-import org.koin.android.viewmodel.ext.android.getSharedViewModel
+import com.phat.testbase.devphat.extensions.gone
+import com.phat.testbase.devphat.extensions.visible
 
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
@@ -41,8 +39,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
   ): View {
     super.onCreateView(inflater, container, savedInstanceState)
     return binding {
-      viewModel = getSharedViewModel()
-      adapter = PosterAdapter()
     }.root
   }
 

@@ -2,7 +2,7 @@ package com.phat.testbase.devphat.utils
 
 object ContainsUtils {
 
-    var baseUrl = "http://113.161.84.22:8063/api/"
+    var baseUrl = "https://www.google.com/"
 
     var HEADER_AUTHORIZATION = "Authorization"
     var HEADER_LANG = "Accept-Language"
@@ -12,6 +12,21 @@ object ContainsUtils {
     var HEADER_CONTENT_TYPE = "Content-Type"
     var HEADER_CONTENT_TYPE_VALUE_JSON = "application/json"
 
+    var RESPONSE_MESSAGE_OK = "OK "
+    var HEADER_CONTENT_TYPE_VALUE = "application/x-www-form-urlencoded"
+
+    /**
+     * Use for upload image --> part
+     */
+    var UPLOAD_IMAGE_PART = "file\"; filename=\"_img.png\" "
+
+    /**
+     * Use for upload image --> Content type
+     */
+    var HEADER_CONTENT_TYPE_IMAGE = "multipart/form-data"
+
+    var TIME_OUT = 60L
+
     /**
      * multi language, =true if has 2 or more language
      */
@@ -19,7 +34,6 @@ object ContainsUtils {
 
     var DEFAULT_LANGUAGE = "vi"
 
-    const val AEON_API_KEY = "3EB76D87D97C427943957C555AB0B60847582D38CB1688ED86C59251206305E3"
-
+    var API_KEY_TOKEN = "BEARER "
 
 }

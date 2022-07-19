@@ -1,0 +1,16 @@
+<resources>
+    <string name="folder_all">Tất cả</string>
+    <string name="msg_no_camera">Không có camera </string>
+    <string name="msg_amount_limit">Không thể chọn thêm hình</string>
+    <string name="msg_please_choose">Vui lòng chọn hình</string>
+    <string name="action_done">Chọn</string>
+    <string name="action_button_string">%1$s (%2$d/%3$d)</string>
+    <string name="photos_unit">Hình : %d</string>
+    <string name="photo_unit">Hình : %d</string>
+    <string name="no_photo_unit">Không có hình</string>
+    <string name="tip_take_photo">Camera</string>
+    <string name="error_image_not_exist">Hình bị lỗi </string>
+    <string name="error_no_permission">Bạn không có quyền thực thi</string>
+    <string name="permission_rationale">Cần có quyền đọc lưu trữ để chọn hình</string>
+    <string name="permission_rationale_write_storage">Cần có quyền đọc lưu trữ hình</string>
+</resources>

@@ -12,6 +12,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:$versions.spotlessGradle"
         classpath "com.github.ben-manes:gradle-versions-plugin:$versions.versionPlugin"
+        classpath "io.realm:realm-gradle-plugin:7.0.0"
     }
 }
 

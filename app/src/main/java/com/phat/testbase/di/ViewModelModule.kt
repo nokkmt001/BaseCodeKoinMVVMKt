@@ -16,14 +16,14 @@
 
 package com.phat.testbase.di
 
-import com.phat.testbase.view.ui.details.PosterDetailViewModel
+import com.phat.testbase.devphat.view.TestViewModel
 import com.phat.testbase.view.ui.main.MainViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
 
-  viewModel { MainViewModel(get()) }
+  viewModel { MainViewModel() }
 
-  viewModel { (posterId: Long) -> PosterDetailViewModel(posterId, get()) }
+  viewModel { TestViewModel(get()) }
 }

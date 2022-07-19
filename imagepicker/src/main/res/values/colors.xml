@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#3e4a59</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#da5850</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gray">#a9a9a9</color>
+    <color name="gray_light">#dcdcdc</color>
+
+    <color name="text_normal">#3e4a59</color>
+    <color name="select_image">#88094578</color>
+    <color name="bg_popup">#90000000</color>
+</resources>

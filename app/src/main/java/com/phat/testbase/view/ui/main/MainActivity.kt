@@ -20,17 +20,22 @@ import android.os.Bundle
 import com.skydoves.bindables.BindingActivity
 import com.phat.testbase.R
 import com.phat.testbase.databinding.ActivityMainBinding
-import com.phat.testbase.extensions.applyExitMaterialTransform
+import com.phat.testbase.devphat.extensions.applyExitMaterialTransform
 import org.koin.android.viewmodel.ext.android.getViewModel
 
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    applyExitMaterialTransform()
-    super.onCreate(savedInstanceState)
-    binding {
-      pagerAdapter = MainPagerAdapter(this@MainActivity)
-      vm = getViewModel()
+    private val dbSize = 100
+    private val userSize = 5
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        applyExitMaterialTransform()
+        super.onCreate(savedInstanceState)
+        binding {
+            pagerAdapter = MainPagerAdapter(this@MainActivity)
+            vm = getViewModel()
+            textTitle.text = "123456789"
+        }
+
     }
-  }
 }

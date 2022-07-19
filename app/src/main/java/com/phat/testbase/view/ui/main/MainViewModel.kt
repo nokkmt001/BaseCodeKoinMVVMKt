@@ -17,30 +17,12 @@
 package com.phat.testbase.view.ui.main
 
 import androidx.databinding.Bindable
-import androidx.lifecycle.viewModelScope
-import com.phat.testbase.model.Poster
-import com.phat.testbase.repository.MainRepository
 import com.skydoves.bindables.BindingViewModel
-import com.skydoves.bindables.asBindingProperty
-import com.skydoves.bindables.bindingProperty
-import timber.log.Timber
 
-class MainViewModel constructor(
-  mainRepository: MainRepository
-) : BindingViewModel() {
+class MainViewModel : BindingViewModel() {
 
   @get:Bindable
-  var isLoading: Boolean by bindingProperty(true)
+  var isLoading: Boolean = false
     private set
 
-  private val posterListFlow = mainRepository.loadDisneyPosters(
-    onSuccess = { isLoading = false }
-  )
-
-  @get:Bindable
-  val posterList: List<Poster> by posterListFlow.asBindingProperty(viewModelScope, emptyList())
-
-  init {
-    Timber.d("injection MainViewModel")
-  }
 }

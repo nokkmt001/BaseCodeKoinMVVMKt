@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
+
 apply from: '../dependencies.gradle'
 
 android {
@@ -75,6 +77,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutinesVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutinesVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
 
     // glide
     implementation "com.github.bumptech.glide:glide:$versions.glideVersion"
@@ -103,6 +106,35 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$versions.mockitoInlineVersion"
 
     implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'androidx.core:core-ktx:1.1.0'
+
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+    implementation 'com.squareup.retrofit2:converter-moshi:2.7.0'
+
+    // rx
+    androidTestImplementation 'io.reactivex.rxjava2:rxjava:2.1.16'
+    androidTestImplementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    kaptAndroidTest 'io.realm:realm-annotations:5.8.0'
+    kaptAndroidTest 'io.realm:realm-annotations-processor:5.8.0'
+    // reaml
+    compileOnly 'io.reactivex.rxjava2:rxjava:2.1.16'
+    compileOnly 'io.reactivex.rxjava2:rxandroid:2.0.2'
+
+    implementation 'com.orhanobut:hawk:2.0.1'
+    // scan
+    implementation 'com.google.zxing:core:3.3.3'
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+    implementation 'me.dm7.barcodescanner:zbar:1.9.13'
+
+    def camerax_version = '1.0.0-alpha03'
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+
+    // firebase
+    implementation 'com.google.firebase:firebase-ml-vision:21.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.0.2'
+    implementation project(':imagepicker')
+
 }
 
 apply from: '../spotless.gradle'

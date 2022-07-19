@@ -8,10 +8,6 @@
     <variable
       name="viewModel"
       type="com.phat.testbase.view.ui.main.MainViewModel" />
-
-    <variable
-      name="adapter"
-      type="com.phat.testbase.view.adapter.PosterAdapter" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,8 +21,6 @@
       android:layout_height="match_parent"
       android:clipToPadding="false"
       android:padding="4dp"
-      app:adapter="@{adapter}"
-      app:adapterPosterList="@{viewModel.posterList}"
       app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
       app:spanCount="2"
       tools:listitem="@layout/item_poster" />

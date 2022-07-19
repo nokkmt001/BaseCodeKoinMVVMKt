@@ -23,8 +23,6 @@ import android.view.ViewGroup
 import com.skydoves.bindables.BindingFragment
 import com.phat.testbase.R
 import com.phat.testbase.databinding.FragmentLibraryBinding
-import com.phat.testbase.view.adapter.PosterLineAdapter
-import org.koin.android.viewmodel.ext.android.getSharedViewModel
 
 class LibraryFragment : BindingFragment<FragmentLibraryBinding>(R.layout.fragment_library) {
 
@@ -35,8 +33,6 @@ class LibraryFragment : BindingFragment<FragmentLibraryBinding>(R.layout.fragmen
   ): View {
     super.onCreateView(inflater, container, savedInstanceState)
     return binding {
-      viewModel = getSharedViewModel()
-      adapter = PosterLineAdapter()
     }.root
   }
 }
