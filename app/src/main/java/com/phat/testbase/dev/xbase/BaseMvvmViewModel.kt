@@ -1,7 +1,9 @@
 package com.phat.testbase.dev.xbase
 
+import androidx.lifecycle.ViewModel
 import com.phat.testbase.dev.utils.ContainsUtils
-import com.skydoves.bindables.BindingViewModel
+import com.phat.testbase.model.RepoState
+import com.phat.testbase.model.UiState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +17,7 @@ fun <T> MutableStateFlow<T>.sendValue(value: T) {
     this.value = value
 }
 
-abstract class BaseMvvmViewModel : BindingViewModel() {
+abstract class BaseMvvmViewModel : ViewModel() {
 
     protected var viewModelJob = SupervisorJob()
     protected val ioContext = viewModelJob + Dispatchers.IO // background context
@@ -23,14 +25,13 @@ abstract class BaseMvvmViewModel : BindingViewModel() {
     protected val ioScope = CoroutineScope(ioContext)
     protected val uiScope = CoroutineScope(uiContext)
 
-    var _eventLoading  = MutableStateFlow(false)
+    var _eventLoading = MutableStateFlow(false)
     var _eventErrorMessage = MutableStateFlow("")
     var _eventNoData = MutableStateFlow(false)
 
-    var eventLoading : StateFlow<Boolean> = _eventLoading
+    var eventLoading: StateFlow<Boolean> = _eventLoading
     var eventErrorMessage: StateFlow<String> = _eventErrorMessage
-    var eventNoData : StateFlow<Boolean> = _eventNoData
-
+    var eventNoData: StateFlow<Boolean> = _eventNoData
     var isRefreshOrLoadMore: Boolean = false
     var isMultiLoading: Boolean = false
     var isMultiCall: Boolean = false
@@ -40,7 +41,8 @@ abstract class BaseMvvmViewModel : BindingViewModel() {
         if (token != null && ContainsUtils.HEADER_HEAD_TOKEN.isNotEmpty())
             headers[ContainsUtils.HEADER_AUTHORIZATION] = token
         headers[ContainsUtils.HEADER_CONTENT_TYPE] = ContainsUtils.HEADER_CONTENT_TYPE_VALUE_JSON
-        if (ContainsUtils.isMultiLanguage) headers[ContainsUtils.HEADER_LANG] = ContainsUtils.DEFAULT_LANGUAGE
+        if (ContainsUtils.isMultiLanguage) headers[ContainsUtils.HEADER_LANG] =
+            ContainsUtils.DEFAULT_LANGUAGE
         headers[ContainsUtils.HEADER_API_KEY] = ""
         headers[ContainsUtils.HEADER_UUID] = UUID.randomUUID()
         return headers
@@ -75,42 +77,13 @@ abstract class BaseMvvmViewModel : BindingViewModel() {
             result.run {
                 return this
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             null
         }
     }
 
-    suspend fun <T> Deferred<Call<T>>.call() : T? {
-        return try {
-            val result = this.await()
-            if (result.execute().isSuccessful) {
-                result.execute().body()!!
-            } else{
-                null
-            }
-        } catch (e: Exception){
-            null
-        }
-    }
-
-    private fun <T> Call<T>.callApi() : T? {
-         val response = try {
-             execute()
-         } catch (e: TimeoutException) {
-             throw TimeoutException()
-         } catch (e: Throwable) {
-             throw e
-         }
-        return if (response.isSuccessful){
-            response.body()
-        } else {
-            Timber.tag("Error").d(response.message())
-            Timber.tag("ErrorCode").d(response.code().toString())
-            null
-        }
-    }
-
-    fun <T> Call<T>.callApiAny() : Any? {
+    private fun <T> Call<T>.callApi(): UiState<T> {
+        val result: UiState<T>
         val response = try {
             execute()
         } catch (e: TimeoutException) {
@@ -118,7 +91,26 @@ abstract class BaseMvvmViewModel : BindingViewModel() {
         } catch (e: Throwable) {
             throw e
         }
-        return if (response.isSuccessful){
+        result = if (response.isSuccessful) {
+            UiState(RepoState.SUCCESS, response.body())
+        } else {
+            Timber.tag("Error").e(response.message())
+            Timber.tag("ErrorCode").e(response.code().toString())
+            _eventErrorMessage.sendValue(response.message())
+            UiState(RepoState.FAIL, message = response.message(), code = response.code())
+        }
+        return result
+    }
+
+    fun <T> Call<T>.callApiAny(): Any? {
+        val response = try {
+            execute()
+        } catch (e: TimeoutException) {
+            throw TimeoutException()
+        } catch (e: Throwable) {
+            throw e
+        }
+        return if (response.isSuccessful) {
             response.body()
         } else {
             Timber.tag("Error").d(response.message())
@@ -127,11 +119,11 @@ abstract class BaseMvvmViewModel : BindingViewModel() {
         }
     }
 
-    fun <T> Call<T>.callApi(function: T?.() -> Unit): T? {
+    fun <T> Call<T>.callApi(function: UiState<T>?.() -> Unit): UiState<T> {
         return callApi().apply(function)
     }
 
-    fun <T> Call<T>.tryCall(shouldBeSuccess: Throwable.() -> Boolean): T? {
+    fun <T> Call<T>.tryCall(shouldBeSuccess: Throwable.() -> Boolean): UiState<T>? {
         return try {
             callApi()
         } catch (e: Throwable) {
@@ -139,9 +131,16 @@ abstract class BaseMvvmViewModel : BindingViewModel() {
         }
     }
 
+    fun clearAll(){
+        viewModelJob.cancel()
+        _eventLoading.sendValue(false)
+        _eventErrorMessage.sendValue("")
+        _eventNoData.sendValue(false)
+    }
+
     override fun onCleared() {
         super.onCleared()
-        viewModelJob.cancel()
+        clearAll()
     }
 
 }

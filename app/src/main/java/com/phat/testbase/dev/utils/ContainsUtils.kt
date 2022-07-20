@@ -2,7 +2,9 @@ package com.phat.testbase.dev.utils
 
 object ContainsUtils {
 
-    var baseUrl = "https://www.google.com/"
+    const val baseUrl = "https://www.google.com/"
+
+    const val baseUrlT = "https://gasanphat.com/"
 
     var HEADER_AUTHORIZATION = "Authorization"
     var HEADER_LANG = "Accept-Language"

@@ -14,4 +14,6 @@ class TestingFragment : BaseMvvmFragment<FragmentMainBinding, BaseMvvmViewModel>
         }
     }
 
+    override fun getVM(): Class<BaseMvvmViewModel> = BaseMvvmViewModel::class.java
+
 }

@@ -2,25 +2,30 @@ package com.phat.testbase.dev.xbase
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.phat.testbase.dev.event.NetworkChangeEvent
 import com.phat.testbase.dev.extensions.dispatchHidden
 import com.phat.testbase.dev.extensions.isVisibleOnScreen
 import com.phat.testbase.dev.extensions.lifecycle.ResultLifecycle
 import com.phat.testbase.dev.extensions.lifecycle.ResultRegistry
 import com.phat.testbase.dev.extensions.lifecycle.ViewLifecycleOwner
+import com.skydoves.bindables.BindingFragment
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
+import java.lang.ref.SoftReference
 
-abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@LayoutRes private val contentLayoutId: Int) : Fragment() {
+abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@LayoutRes private val contentLayoutId: Int) : BindingFragment<T>(contentLayoutId) {
     private val TAG: String = this.javaClass.simpleName
 
     companion object {
@@ -29,7 +34,7 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         private const val STATE_NONE = -1
     }
 
-    lateinit var binding : T
+//    lateinit var binding : T
     /**
      * use or not EventBus
      */
@@ -44,15 +49,21 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
 
     lateinit var viewModel : VM
 
+//    lateinit var viewModel : VM
+
     val viewLife = ViewLifecycleOwner()
     val resultLife: ResultLifecycle = ResultRegistry()
 
     private val mLifeRegistry get() = viewLife.lifecycle
     private var mVisibleState = STATE_NONE
 
-    var isConnected = true
+    private var isConnected = true
 
     private var mExitTime: Long = 0
+
+    private var fragmentView: SoftReference<View>? = null
+
+    private var isLowMemory = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -64,36 +75,48 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
             EventBus.getDefault().register(this)
         }
 
-//        viewModel = ViewModelProvider(this).get(getFirstGenericParameter()) as VM
+//        viewModel = BaseMvvmViewModel() as VM
+
+        viewModel = activity?.let { ViewModelProvider(it) }?.get(getVM()) as VM
+    }
+
+    abstract fun getVM(): Class<VM>
+
+    fun <T : ViewModel> getViewModel(className: Class<T>): T? {
+        return activity?.let { ViewModelProvider(it)[className] }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        val saveData = setSaveData()
+        if (saveData != null) {
+            outState.putAll(saveData)
+        }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        super.onCreateView(inflater, container, savedInstanceState)
-        binding = DataBindingUtil.inflate(inflater,contentLayoutId,container,false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        startFlow()
-        initData()
-        initVM()
+        try {
+            if (savedInstanceState != null) onLoadSaveData(savedInstanceState)
+            startFlow()
+            initData()
+            initVM()
+        } catch (e:Exception) {
+            Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
+
+    protected fun onLoadSaveData(savedInstanceState: Bundle) {}
 
     override fun onLowMemory() {
         super.onLowMemory()
+        viewModel.clearAll()
+        clearViews()
+        onStart()
     }
 
     final override fun onStart() {
@@ -101,7 +124,7 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         if (isVisibleOnScreen()) {
             performStartFragment()
             mLifeRegistry.start()
-            Log.i(TAG, "Start")
+            Timber.tag(TAG).i("Start")
         }
     }
 
@@ -110,7 +133,7 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         if (isVisibleOnScreen()) {
             onFragmentResumed()
             mLifeRegistry.resume()
-            Log.i(TAG, "Resume")
+            Timber.tag(TAG).i("Resume")
         }
     }
 
@@ -119,7 +142,8 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         if (isVisibleOnScreen()) {
             onFragmentPaused()
             mLifeRegistry.pause()
-            Log.i(TAG, "Pause")
+            Timber.tag(TAG).i("Pause")
+            viewModel.clearAll()
         }
     }
 
@@ -128,12 +152,15 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         if (isVisibleOnScreen()) {
             performStopFragment()
             mLifeRegistry.stop()
-            Log.i(TAG, "Stop")
+            Timber.tag(TAG).i("Stop")
+            viewModel.clearAll()
         }
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.clearAll()
     }
 
     override fun onDestroy() {
@@ -141,6 +168,7 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         if (useEventBus()) {
             EventBus.getDefault().unregister(this)
         }
+        viewModel.clearAll()
     }
 
     override fun onDetach() {
@@ -180,13 +208,13 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
             mLifeRegistry.pause()
             performStopFragment()
             mLifeRegistry.stop()
-            Log.i(TAG, "Hide")
+            Timber.tag(TAG).i("Hide")
         } else {
             performStartFragment()
             mLifeRegistry.start()
             onFragmentResumed()
             mLifeRegistry.resume()
-            Log.i(TAG, "Show")
+            Timber.tag(TAG).i("Show")
         }
         dispatchHidden(hidden)
     }
@@ -243,6 +271,16 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         } else {
             doDisConnected()
         }
+    }
+
+    fun setSaveData(): Bundle? {
+        return null
+    }
+
+    private fun clearViews() {
+        if (fragmentView != null) fragmentView!!.clear()
+        fragmentView = null
+        isLowMemory = true
     }
 
 }

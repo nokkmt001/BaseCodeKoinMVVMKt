@@ -18,11 +18,12 @@ package com.phat.testbase.view.ui.main
 
 import androidx.databinding.Bindable
 import com.skydoves.bindables.BindingViewModel
+import com.skydoves.bindables.bindingProperty
 
 class MainViewModel : BindingViewModel() {
 
   @get:Bindable
-  var isLoading: Boolean = false
+  var isLoading: Boolean by bindingProperty(false)
     private set
 
 }

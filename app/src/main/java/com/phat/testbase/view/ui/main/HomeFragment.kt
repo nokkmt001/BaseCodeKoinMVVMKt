@@ -45,25 +45,25 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    binding {
-      fab.setOnClickListener {
-        TransitionManager.beginDelayedTransition(
-          container,
-          getTransform(it, card)
-        )
-        card.visible()
-        it.gone(true)
-      }
-
-      card.setOnClickListener {
-        TransitionManager.beginDelayedTransition(
-          container,
-          getTransform(it, fab)
-        )
-        fab.visible()
-        it.gone(true)
-      }
-    }
+//    binding {
+//      fab.setOnClickListener {
+//        TransitionManager.beginDelayedTransition(
+//          container,
+//          getTransform(it, card)
+//        )
+//        card.visible()
+//        it.gone(true)
+//      }
+//
+//      card.setOnClickListener {
+//        TransitionManager.beginDelayedTransition(
+//          container,
+//          getTransform(it, fab)
+//        )
+//        fab.visible()
+//        it.gone(true)
+//      }
+//    }
   }
 
   private fun getTransform(mStartView: View, mEndView: View): MaterialContainerTransform {

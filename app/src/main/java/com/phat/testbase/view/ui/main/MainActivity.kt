@@ -16,24 +16,53 @@
 
 package com.phat.testbase.view.ui.main
 
-import android.os.Bundle
-import android.os.PersistableBundle
-import com.skydoves.bindables.BindingActivity
+import android.os.Looper
 import com.phat.testbase.R
 import com.phat.testbase.databinding.ActivityMainBinding
-import com.phat.testbase.dev.extensions.applyExitMaterialTransform
+import com.phat.testbase.dev.extensions.gone
+import com.phat.testbase.dev.extensions.visible
+import com.phat.testbase.dev.xbase.BaseMvvmActivity
+import com.phat.testbase.dev.xbase.EmptyViewModel
+import com.skydoves.bindables.BindingFragment
+import kotlinx.android.synthetic.main.activity_main.*
+import java.util.logging.Handler
 
-class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
+class MainActivity : BaseMvvmActivity<ActivityMainBinding, EmptyViewModel>(R.layout.activity_main) {
+    private val splashFragment = SplashFragment()
 
-    private val dbSize = 100
-    private val userSize = 5
-
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        applyExitMaterialTransform()
+    override fun startFlow() {
+        super.startFlow()
+        showMain(false)
+        loadFragment(splashFragment)
 
         binding {
-            textTitle.text = "123456789"
+            pagerAdapter = MainPagerAdapter(this@MainActivity)
+//            vm = getViewModel()
+        }
+
+        android.os.Handler(Looper.getMainLooper()).postDelayed({
+            showMain(true)
+        }, 2000)
+
+    }
+
+    override fun getVM(): Class<EmptyViewModel> = EmptyViewModel::class.java
+
+    private fun showMain(isShow:Boolean) {
+        if (isShow) {
+            containerMain.visible()
+            containerLayout.gone()
+        } else {
+            containerMain.gone()
+            containerLayout.visible()
+        }
+
+    }
+
+    private fun loadFragment(fragment: BindingFragment<*>) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.containerLayout, fragment)
+            commit()
         }
     }
 }

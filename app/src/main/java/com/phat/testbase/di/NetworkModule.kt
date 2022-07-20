@@ -17,7 +17,7 @@
 package com.phat.testbase.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.phat.testbase.dev.utils.ContainsUtils.baseUrl
+import com.phat.testbase.dev.utils.ContainsUtils.baseUrlT
 import com.phat.testbase.network.RequestInterceptor
 import com.phat.testbase.network.TestService
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
@@ -37,7 +37,7 @@ val networkModule = module {
   single {
     Retrofit.Builder()
       .client(get<OkHttpClient>())
-      .baseUrl(baseUrl)
+      .baseUrl(baseUrlT)
       .addConverterFactory(GsonConverterFactory.create())
       .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
       .addCallAdapterFactory(CoroutineCallAdapterFactory())

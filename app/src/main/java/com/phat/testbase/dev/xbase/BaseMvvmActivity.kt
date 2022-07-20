@@ -9,8 +9,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.phat.testbase.R
@@ -19,12 +17,14 @@ import com.phat.testbase.dev.extensions.lifecycle.LifeRegister
 import com.phat.testbase.dev.extensions.lifecycle.ResultLifecycle
 import com.phat.testbase.dev.extensions.lifecycle.ResultRegistry
 import com.phat.testbase.dev.extensions.toastLong
+import com.skydoves.bindables.BindingActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.ref.SoftReference
 
 abstract class BaseMvvmActivity<T : ViewDataBinding, VM : BaseMvvmViewModel>(@LayoutRes private val contentLayoutId: Int) :
-    AppCompatActivity(){
+    BindingActivity<T>(contentLayoutId){
 
     val resultLife: ResultLifecycle = ResultRegistry()
 
@@ -32,17 +32,12 @@ abstract class BaseMvvmActivity<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
 
     var hasNetwork: Boolean = true
 
-    lateinit var binding : T
-
-    /**
-     * Broadcast of network status changes
-     */
     lateinit var viewModel: VM
+
+    private var isLowMemory = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, contentLayoutId)
-        setContentView(binding.root)
 
         if (useEventBus()) {
             EventBus.getDefault().register(this)
@@ -163,7 +158,7 @@ abstract class BaseMvvmActivity<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         return super.dispatchTouchEvent(event)
     }
 
-   private fun eventLoading() {
+    private fun eventLoading() {
 
     }
 
@@ -240,7 +235,7 @@ abstract class BaseMvvmActivity<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
     }
 
     /**
-     * Network Change
+     * Network Change From EventBus
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNetworkChangeEvent(event: NetworkChangeEvent) {
@@ -248,5 +243,9 @@ abstract class BaseMvvmActivity<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         checkNetwork(event.isConnected)
     }
 
-}
+    protected open fun setSaveData(): Bundle? {
+        return null
+    }
 
+    protected open fun onLoadSaveData(data: Bundle?) {}
+}
