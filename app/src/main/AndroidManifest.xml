@@ -63,6 +63,7 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".dev.xbase.adapter5.MainRxActivity" />
 
         <receiver android:name=".service.receiver.NetworkChangeReceiver"
             android:exported="false">

@@ -135,6 +135,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.0.2'
     implementation project(':imagepicker')
 
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45'
+
+
 }
 
 apply from: '../spotless.gradle'

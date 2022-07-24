@@ -9,4 +9,6 @@
 
   <string name="mess_network_unavailable_tip">Mất kết nối internet, vui lòng kiểm tra lại!</string>
 
+  <string name="unexpected_exception" />
+
 </resources>

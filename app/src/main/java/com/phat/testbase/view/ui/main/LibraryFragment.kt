@@ -20,11 +20,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.skydoves.bindables.BindingFragment
 import com.phat.testbase.R
 import com.phat.testbase.databinding.FragmentLibraryBinding
+import com.phat.testbase.dev.view.TestViewModel
 
 class LibraryFragment : BindingFragment<FragmentLibraryBinding>(R.layout.fragment_library) {
+
+//  var vmm :TestViewModel?=null
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -34,5 +38,11 @@ class LibraryFragment : BindingFragment<FragmentLibraryBinding>(R.layout.fragmen
     super.onCreateView(inflater, container, savedInstanceState)
     return binding {
     }.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+//    vmm = ViewModelProvider(requireActivity())[TestViewModel::class.java]
+//    vmm!!.testDataBanner()
   }
 }

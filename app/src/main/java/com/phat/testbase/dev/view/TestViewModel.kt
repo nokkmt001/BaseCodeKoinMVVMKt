@@ -8,7 +8,7 @@ import com.phat.testbase.model.TestBanner
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class TestViewModel : BaseMvvmViewModel() {
+class TestViewModel(private val api: TestService) : BaseMvvmViewModel() {
 
     private val service: TestService = TestClient.getClient()
 
@@ -27,6 +27,11 @@ class TestViewModel : BaseMvvmViewModel() {
                 showLoading(false)
             }
         }
+        api.getBannerAsync().callApi {
+            _resultBanner.value = this?.result!!
+            showLoading(false)
+        }
+
     }
 }
 

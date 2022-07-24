@@ -53,7 +53,7 @@ abstract class BaseApiClient<Client> {
         return apiClient!!
     }
 
-    val moshi = Moshi.Builder()
+    private val moshi = Moshi.Builder()
         .add(BigDecimalAdapter)
         .build()
 

@@ -2,14 +2,10 @@ package com.phat.testbase.dev.xbase
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.phat.testbase.dev.event.NetworkChangeEvent
@@ -18,6 +14,8 @@ import com.phat.testbase.dev.extensions.isVisibleOnScreen
 import com.phat.testbase.dev.extensions.lifecycle.ResultLifecycle
 import com.phat.testbase.dev.extensions.lifecycle.ResultRegistry
 import com.phat.testbase.dev.extensions.lifecycle.ViewLifecycleOwner
+import com.phat.testbase.dev.utils.ScreenUtil
+import com.phat.testbase.view.ui.main.MainActivity
 import com.skydoves.bindables.BindingFragment
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -34,7 +32,6 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         private const val STATE_NONE = -1
     }
 
-//    lateinit var binding : T
     /**
      * use or not EventBus
      */
@@ -49,9 +46,8 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
 
     lateinit var viewModel : VM
 
-//    lateinit var viewModel : VM
-
     val viewLife = ViewLifecycleOwner()
+
     val resultLife: ResultLifecycle = ResultRegistry()
 
     private val mLifeRegistry get() = viewLife.lifecycle
@@ -74,9 +70,6 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         if (useEventBus()) {
             EventBus.getDefault().register(this)
         }
-
-//        viewModel = BaseMvvmViewModel() as VM
-
         viewModel = activity?.let { ViewModelProvider(it) }?.get(getVM()) as VM
     }
 
@@ -281,6 +274,18 @@ abstract class BaseMvvmFragment<T : ViewDataBinding, VM : BaseMvvmViewModel>(@La
         if (fragmentView != null) fragmentView!!.clear()
         fragmentView = null
         isLowMemory = true
+    }
+
+    protected open fun myActivity(): MainActivity? {
+        try {
+            return activity as MainActivity?
+        } catch (ignored: java.lang.Exception) {
+        }
+        return null
+    }
+
+    fun lockScreen(isLock: Boolean) {
+        ScreenUtil.lockScreen(activity, isLock)
     }
 
 }

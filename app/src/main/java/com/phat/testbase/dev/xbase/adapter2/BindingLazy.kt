@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package com.phat.testbase.di
+package com.phat.testbase.dev.xbase.adapter2
 
-import com.phat.testbase.dev.view.TestViewModel
-import com.phat.testbase.view.ui.main.MainViewModel
-import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import com.skydoves.baserecyclerviewadapter.BaseViewHolder
 
-val viewModelModule = module {
-
-  viewModel { MainViewModel() }
-
-  viewModel { TestViewModel(get()) }
-}
+inline fun <reified T : ViewDataBinding> BaseViewHolder.bindings(): Lazy<T> =
+  lazy(LazyThreadSafetyMode.NONE) {
+    requireNotNull(DataBindingUtil.bind(itemView)) { "cannot find the matched view to layout." }
+  }
